@@ -14,7 +14,7 @@ import android.os.Build;
 
 import com.facebook.react.HeadlessJsTaskService;
 
-public class HeartbeartService extends Service {
+public class HeartbeatService extends Service {
 
     private static final int SERVICE_NOTIFICATION_ID = 12345;
     private static final String CHANNEL_ID = "HEARTBEAT";
@@ -24,7 +24,8 @@ public class HeartbeartService extends Service {
         @Override
         public void run() {
             Context context = getApplicationContext();
-            Intent myIntent = new Intent(context, HeartbeatEventService.class);
+            // Intent myIntent = new Intent(context, HeartbeatEventService.class);
+            Intent myIntent = new Intent(context, HeartbeatService.class);
             context.startService(myIntent);
             HeadlessJsTaskService.acquireWakeLockNow(context);
             handler.postDelayed(this, 2000);
