@@ -3,43 +3,42 @@ import React, { useState, useEffect, useRef } from 'react';
 import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, useColorScheme, View, 
  AppState } from 'react-native';
 import CustomModule from './CustomModule';
+import ReactNativeForegroundService from '@supersami/rn-foreground-service';
 
 const App= () => {
-  const [androidId, setAndroidId] = useState("");
-  const appState = useRef(AppState.currentState);
-  const [appStateVisible, setAppStateVisible] = useState(appState.current);
-  const getDeviceInfo= async()=>{
-    const deviceInfo = await CustomModule.getDeviceInfo() 
-    setAndroidId(deviceInfo)
-  }
-  useEffect(() => {
-      AppState.addEventListener("change", _handleAppStateChange)
-      return ()=>{
-        AppState.removeEventListener("change", _handleAppStateChange)
-      }
-      // getDeviceInfo()
-  }, [])
-
-  const _handleAppStateChange=(nextAppState)=>{
-    
-    if( appState.current.match(/inactive|background/) && nextAppState=== 'active'){
-      console.log("App has come to foreground")
-    }else{
-      console.log( "State: ", nextAppState)
+  ReactNativeForegroundService.add_task(()=>{
+      console.log("demo 123");
+    },{
+        delay: 100,
+        onLoop: true,
+        taskId: 1234,
+        onError: (e)=>{
+            console.log(e)
+        }
     }
-    appState.current = nextAppState
-    setAppStateVisible(appState.current)
-    
+  )
+
+  const _handerStartHeadless = ()=>{
+    ReactNativeForegroundService.start({
+      id: 1234,
+      title: "Foreground Service",
+      message: "you are online!",
+    });
   }
+
+  const _handerStoptHeadless=()=>{
+    ReactNativeForegroundService.stop()
+  }
+
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
-        <Text style={styles.text}> Hello </Text>
-        <TouchableOpacity onPress={getDeviceInfo}>
-          <Text> OnPress</Text>
-        </TouchableOpacity>
-        <Text style={styles.text}> {androidId} </Text>
-      </ScrollView>
+     <Text> Hello</Text>
+     <TouchableOpacity onPress={_handerStartHeadless} style={styles.button}>
+       <Text> Start Listener</Text>
+     </TouchableOpacity>
+     <TouchableOpacity onPress={_handerStoptHeadless} style={styles.button}>
+       <Text> Stop Listener</Text>
+     </TouchableOpacity>
     </SafeAreaView>
   );
 };
@@ -54,6 +53,12 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: '600',
   },
+  button:{
+    padding: 10,
+    backgroundColor: "#3de",
+    borderWidth: 1,
+    borderRadius: 5,
+  }
 });
 
 export default App;
