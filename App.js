@@ -1,18 +1,36 @@
 
-import React, { useState, useEffect } from 'react';
-import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, useColorScheme, View, } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, useColorScheme, View, 
+ AppState } from 'react-native';
 import CustomModule from './CustomModule';
 
 const App= () => {
-  const [androidId, setAndroidId] = useState("123");
+  const [androidId, setAndroidId] = useState("");
+  const appState = useRef(AppState.currentState);
+  const [appStateVisible, setAppStateVisible] = useState(appState.current);
   const getDeviceInfo= async()=>{
     const deviceInfo = await CustomModule.getDeviceInfo() 
     setAndroidId(deviceInfo)
   }
-  // useEffect(() => {
-      
-  //     getDeviceInfo()
-  // }, [])
+  useEffect(() => {
+      AppState.addEventListener("change", _handleAppStateChange)
+      return ()=>{
+        AppState.removeEventListener("change", _handleAppStateChange)
+      }
+      // getDeviceInfo()
+  }, [])
+
+  const _handleAppStateChange=(nextAppState)=>{
+    
+    if( appState.current.match(/inactive|background/) && nextAppState=== 'active'){
+      console.log("App has come to foreground")
+    }else{
+      console.log( "State: ", nextAppState)
+    }
+    appState.current = nextAppState
+    setAppStateVisible(appState.current)
+    
+  }
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
