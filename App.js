@@ -1,10 +1,12 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, useColorScheme, View, 
- AppState } from 'react-native';
-import CustomModule from './CustomModule';
+ AppState, PermissionsAndroid } from 'react-native';
+// import CustomModule from './CustomModule';
 import ReactNativeForegroundService from '@supersami/rn-foreground-service';
-import CallDetectorManager from 'react-native-call-detection'
+import CallDetectorManager from 'react-native-call-detection';
+import { WebView } from 'react-native-webview';
+import axios from 'axios';
 
 const App= () => {
   ReactNativeForegroundService.add_task(()=>{
@@ -20,7 +22,38 @@ const App= () => {
     }
   )
   
+  const askPermission= async () => {
+    try {
+     const permissions = await PermissionsAndroid.requestMultiple(
+      [
+       PermissionsAndroid.PERMISSIONS.READ_CALL_LOG,
+       PermissionsAndroid.PERMISSIONS.READ_PHONE_STATE
+      ]);
+     console.log('Permissions are: ', permissions);
+    } catch (err) {
+      console.warn(err);
+    }
+   };
+
+  useEffect(() => {
+    askPermission();
+    _handerStartHeadless();
+    // startListener()
+  }, [])
   
+  const sendTriggerMissingCallToServer = (phone_number)=>{
+    const res = axios.post('https://webmely.com/api/v2/event_store/income',  
+        {
+          access_token: '7de0acffbfbf3a4b4b12ea426e31e03f',
+          event_name: 'missed-call',
+          payload: {
+            phone_number: phone_number,
+          }
+        }
+      );
+
+  }
+
   const startListener = ()=> {
     this.callDetector = new CallDetectorManager((event, phoneNumber)=> {
         console.log(event)
@@ -46,8 +79,7 @@ const App= () => {
         // This clause will only be executed for Android
         }
         else if (event === 'Missed') {
-            // Do something call got missed
-            // This clause will only be executed for Android
+          sendTriggerMissingCallToServer(phoneNumber)
         }
       },
       true, // if you want to read the phone number of the incoming call [ANDROID], otherwise false
@@ -72,15 +104,12 @@ const App= () => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-     <Text> Hello</Text>
-     <TouchableOpacity onPress={_handerStartHeadless} style={styles.button}>
-       <Text> Start Listener</Text>
-     </TouchableOpacity>
-     <TouchableOpacity onPress={_handerStoptHeadless} style={styles.button}>
-       <Text> Stop Listener</Text>
-     </TouchableOpacity>
-    </SafeAreaView>
+    <WebView
+      source={{
+        uri: 'https://hopgiaysi.com/admin'
+      }}
+      style={{ marginTop: 20 }}
+    />
   );
 };
 
