@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "demoRNModule.app"
-               BlueprintName = "demoRNModule"
-               ReferencedContainer = "container:demoRNModule.xcodeproj">
+               BuildableName = "HopGiaySi.app"
+               BlueprintName = "HopGiaySi"
+               ReferencedContainer = "container:HopGiaySi.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "demoRNModuleTests.xctest"
-               BlueprintName = "demoRNModuleTests"
-               ReferencedContainer = "container:demoRNModule.xcodeproj">
+               BuildableName = "HopGiaySiTests.xctest"
+               BlueprintName = "HopGiaySiTests"
+               ReferencedContainer = "container:HopGiaySi.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "demoRNModule.app"
-            BlueprintName = "demoRNModule"
-            ReferencedContainer = "container:demoRNModule.xcodeproj">
+            BuildableName = "HopGiaySi.app"
+            BlueprintName = "HopGiaySi"
+            ReferencedContainer = "container:HopGiaySi.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "demoRNModule.app"
-            BlueprintName = "demoRNModule"
-            ReferencedContainer = "container:demoRNModule.xcodeproj">
+            BuildableName = "HopGiaySi.app"
+            BlueprintName = "HopGiaySi"
+            ReferencedContainer = "container:HopGiaySi.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
